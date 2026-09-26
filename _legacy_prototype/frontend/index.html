@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1d3a">
+  <title>Sakshya360</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="phone">
+    <header id="topbar">
+      <div class="brand"><img src="icon.svg" alt=""><div><b>Sakshya360</b><small id="roleLabel">DoSJE Monitoring</small></div></div>
+      <button id="logoutBtn" class="ghost hidden">Switch role</button>
+    </header>
+    <main id="view"></main>
+    <nav id="tabs" class="hidden"></nav>
+  </div>
+  <div id="modal" class="hidden"><div class="sheet" id="modalBody"></div></div>
+  <div id="toast" class="hidden"></div>
+  <script src="app.js"></script>
+</body>
+</html>

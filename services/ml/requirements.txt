@@ -1,0 +1,10 @@
+fastapi>=0.115
+uvicorn[standard]>=0.30
+python-multipart>=0.0.9
+numpy>=1.26,<3
+scikit-learn>=1.5
+joblib>=1.4
+torch>=2.3
+opencv-python-headless>=4.10,<5  # 5.x dropped the HOG people detector
+ortools>=9.10
+

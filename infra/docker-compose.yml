@@ -1,0 +1,88 @@
+# Sakshya360 infrastructure: PostgreSQL+PostGIS, MongoDB (evidence), MediaMTX (CCTV → WebRTC).
+name: sakshya360
+
+services:
+  postgres:
+    # Multi-arch PostGIS build (the official postgis/postgis image is amd64-only).
+    image: imresamu/postgis:16-3.4
+    environment:
+      POSTGRES_USER: sakshya
+      POSTGRES_PASSWORD: sakshya
+      POSTGRES_DB: sakshya360
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sakshya -d sakshya360"]
+      interval: 5s
+      retries: 20
+
+  mongo:
+    image: mongo:7
+    ports: ["27017:27017"]
+    volumes: [mongodata:/data/db]
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      retries: 20
+
+  mediamtx:
+    # RTSP/ONVIF cameras in, WebRTC (WHEP) out. The -ffmpeg image simulates cameras for the demo.
+    image: bluenviron/mediamtx:latest-ffmpeg
+    ports:
+      - "8554:8554"        # RTSP ingest
+      - "8889:8889"        # WebRTC WHEP (proxied by the API)
+      - "8189:8189/udp"    # WebRTC media
+      - "9997:9997"        # control API (camera health)
+    environment:
+      MTX_WEBRTCADDITIONALHOSTS: 127.0.0.1,${HOST_LAN_IP:-127.0.0.1}
+    volumes:
+      - ./mediamtx.yml:/mediamtx.yml:ro
+      - ./outages:/outages:ro
+
+  # ---- Application services: `docker compose --profile app up -d --build` (see README "Deployment").
+  ml:
+    profiles: [app]
+    build: ../services/ml
+    restart: unless-stopped
+
+  api:
+    profiles: [app]
+    build: ../services/api
+    restart: unless-stopped
+    depends_on:
+      postgres: { condition: service_healthy }
+      mongo: { condition: service_healthy }
+      ml: { condition: service_started }
+    environment:
+      NODE_ENV: production
+      JWT_SECRET: ${JWT_SECRET:-}           # required: openssl rand -hex 32
+      CORS_ORIGINS: ${PUBLIC_WEB_URL:-http://localhost:8080}
+      PUBLIC_WEB_URL: ${PUBLIC_WEB_URL:-http://localhost:8080}
+      DATABASE_URL: postgres://sakshya:sakshya@postgres:5432/sakshya360
+      MONGO_URL: mongodb://mongo:27017
+      ML_URL: http://ml:8001
+      MEDIAMTX_URL: http://mediamtx:8889
+      MEDIAMTX_API_URL: http://mediamtx:9997
+      RTSP_BASE_URL: rtsp://mediamtx:8554
+      CAMERA_OUTAGE_DIR: /outages
+      JITSI_DOMAIN: ${JITSI_DOMAIN:-meet.jit.si}
+      SMS_WEBHOOK_URL: ${SMS_WEBHOOK_URL:-}
+      SMS_WEBHOOK_TOKEN: ${SMS_WEBHOOK_TOKEN:-}
+      EXPO_ACCESS_TOKEN: ${EXPO_ACCESS_TOKEN:-}
+      OIDC_ISSUER: ${OIDC_ISSUER:-}
+      OIDC_CLIENT_ID: ${OIDC_CLIENT_ID:-}
+      OIDC_CLIENT_SECRET: ${OIDC_CLIENT_SECRET:-}
+      OIDC_REDIRECT_URI: ${OIDC_REDIRECT_URI:-}
+    ports: ["4000:4000"]   # mobile app talks to the API directly
+    volumes: [./outages:/outages]
+
+  web:
+    profiles: [app]
+    build: ../apps/web
+    restart: unless-stopped
+    depends_on: [api]
+    ports: ["8080:80"]
+
+volumes:
+  pgdata:
+  mongodata:

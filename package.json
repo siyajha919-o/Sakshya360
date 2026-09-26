@@ -1,0 +1,21 @@
+{
+  "name": "sakshya360",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Smart Real-Time Monitoring & Inspection app for DoSJE schemes (SIH PS 26095)",
+  "scripts": {
+    "infra:up": "HOST_LAN_IP=${HOST_LAN_IP:-$(ipconfig getifaddr en0 2>/dev/null || echo 127.0.0.1)} docker compose -f infra/docker-compose.yml up -d --wait",
+    "infra:down": "docker compose -f infra/docker-compose.yml down",
+    "ml:setup": "cd services/ml && uv venv --python 3.11 .venv && uv pip install --python .venv/bin/python -r requirements-dev.txt && .venv/bin/python download_models.py && .venv/bin/python train.py",
+    "ml": "cd services/ml && .venv/bin/uvicorn app:app --host 127.0.0.1 --port 8001",
+    "api": "npm --prefix services/api start",
+    "api:reseed": "node services/api/src/db/seed.js --force",
+    "web": "npm --prefix apps/web run dev",
+    "mobile": "npm --prefix apps/mobile start",
+    "setup": "npm --prefix services/api install && npm --prefix apps/web install && npm --prefix apps/mobile install && npm run ml:setup",
+    "test": "npm --prefix services/api test && cd services/ml && .venv/bin/python -m unittest discover -s tests",
+    "test:e2e": "npm --prefix services/api run test:e2e",
+    "app:up": "docker compose -f infra/docker-compose.yml --profile app up -d --build",
+    "ml:retrain-real": "cd services/ml && .venv/bin/python train.py --real"
+  }
+}

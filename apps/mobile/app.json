@@ -1,0 +1,65 @@
+{
+  "expo": {
+    "name": "Sakshya360",
+    "slug": "sakshya360",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "in.gov.dosje.sakshya360",
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0b1d3a",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "package": "in.gov.dosje.sakshya360",
+      "usesCleartextTraffic": true,
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "CAMERA",
+        "MODIFY_AUDIO_SETTINGS",
+        "POST_NOTIFICATIONS",
+        "RECORD_AUDIO",
+        "VIBRATE"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-secure-store",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Sakshya360 uses the camera to capture live inspection evidence, attendance selfies and video calls.",
+          "microphonePermission": "Sakshya360 records audio for inspection walkthrough videos and verification calls.",
+          "recordAudioAndroid": true
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Sakshya360 geo-tags inspection reports and attendance to verify they were made at the project site."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#0b1d3a",
+          "defaultChannel": "default"
+        }
+      ]
+    ]
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "samples": 4000,
+  "test_samples": 1000,
+  "data": {
+    "synthetic": 4000,
+    "real": 0,
+    "real_test_roc_auc": null
+  },
+  "risk_classifier": {
+    "algorithm": "GradientBoostingClassifier",
+    "roc_auc": 0.9552,
+    "report": {
+      "genuine": {
+        "precision": 0.9668874172185431,
+        "recall": 0.9811827956989247,
+        "f1-score": 0.9739826551034023,
+        "support": 744.0
+      },
+      "malpractice": {
+        "precision": 0.9428571428571428,
+        "recall": 0.90234375,
+        "f1-score": 0.9221556886227545,
+        "support": 256.0
+      },
+      "accuracy": 0.961,
+      "macro avg": {
+        "precision": 0.954872280037843,
+        "recall": 0.9417632728494624,
+        "f1-score": 0.9480691718630785,
+        "support": 1000.0
+      },
+      "weighted avg": {
+        "precision": 0.9607356669820246,
+        "recall": 0.961,
+        "f1-score": 0.9607149516843565,
+        "support": 1000.0
+      }
+    },
+    "feature_importance": {
+      "unique_ratio": 0.29790982961157875,
+      "cv": 0.16839157247756265,
+      "max_abs_z": 0.1385944329773966,
+      "round_frac": 0.12939312060285804,
+      "over_capacity_frac": 0.12209686007066677,
+      "inspection_spike": 0.10204207464968965,
+      "trend": 0.02359152915961941,
+      "occupancy": 0.006920047170739952,
+      "days_since_inspection": 0.0032830897887915897,
+      "fund_utilisation": 0.002907626219830965,
+      "headcount_gap": 0.002302065146169317,
+      "vc_fails": 0.00152571281456509,
+      "geo_fails": 0.0005499796671021354,
+      "camera_offline_frac": 0.00029782827564001877,
+      "complaints": 0.00019423136778918556
+    }
+  },
+  "attendance_autoencoder": {
+    "algorithm": "PyTorch Conv1d autoencoder (6-d bottleneck, two-sided residual score)",
+    "roc_auc": 0.8967,
+    "thresholds": {
+      "day_threshold": 0.12580040097236633,
+      "log_energy_mean": -6.275514602661133,
+      "log_energy_std": 0.35392096638679504,
+      "z_threshold": 2.3253746032714844
+    }
+  },
+  "per_fraud_type": {
+    "flat_register": {
+      "classifier_auc": 0.9164,
+      "autoencoder_auc": 0.9173
+    },
+    "inspection_spike": {
+      "classifier_auc": 0.9704,
+      "autoencoder_auc": 0.9664
+    },
+    "over_report": {
+      "classifier_auc": 0.9523,
+      "autoencoder_auc": 0.9242
+    },
+    "ghost_beneficiaries": {
+      "classifier_auc": 0.9626,
+      "autoencoder_auc": 0.9366
+    },
+    "round_numbers": {
+      "classifier_auc": 0.9839,
+      "autoencoder_auc": 0.7355
+    }
+  }
+}

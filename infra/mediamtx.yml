@@ -1,0 +1,44 @@
+# MediaMTX config. Each path is one CCTV camera, named <projectId>_<camNo>.
+# Real cameras: add a path with   source: rtsp://user:pass@<camera-ip>:554/stream1
+logLevel: info
+
+rtsp: yes
+rtspAddress: :8554
+hls: no
+api: yes
+apiAddress: :9997
+rtmp: no
+srt: no
+
+webrtc: yes
+webrtcAddress: :8889
+webrtcLocalUDPAddress: :8189
+# Docker Desktop: advertise the host so browsers can reach the media port. For phones on the LAN,
+# set MTX_WEBRTCADDITIONALHOSTS=<your LAN IP> (docker-compose passes HOST_LAN_IP through).
+webrtcAdditionalHosts: [127.0.0.1]
+
+# The API server polls the control API for camera health. MediaMTX only allows API calls from
+# localhost by default, and Docker's port mapping is not localhost, so allow it here.
+# Production: restrict `ips` to the API server's address and give it a password.
+authInternalUsers:
+  - user: any
+    pass:
+    ips: []
+    permissions:
+      - action: publish
+      - action: read
+      - action: playback
+      - action: api
+
+pathDefaults:
+  runOnInitRestart: yes
+
+# Simulated cameras: any path like P101_1 starts an FFmpeg test source on demand (only while someone watches).
+# Each camera number gets a different hue so feeds are distinguishable. A marker file in /outages/<path>
+# (written by the API's "simulate outage" demo control and by the seed) makes the source refuse to start,
+# so the API's health check sees a genuinely dead stream.
+paths:
+  "~^(P[0-9]+)_([0-9])$":
+    runOnDemand: sh -c 'test ! -e /outages/$MTX_PATH && exec ffmpeg -re -f lavfi -i testsrc2=size=640x360:rate=15 -vf hue=h=$G2*80 -c:v libx264 -preset ultrafast -tune zerolatency -profile:v baseline -pix_fmt yuv420p -g 30 -bf 0 -f rtsp rtsp://localhost:$RTSP_PORT/$MTX_PATH'
+    runOnDemandStartTimeout: 8s
+    runOnDemandCloseAfter: 15s
