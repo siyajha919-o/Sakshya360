@@ -49,8 +49,10 @@ async function reportPdf(r, out) {
 
   heading('2. Checklist');
   r.checklist.forEach(c => {
-    doc.font('Helvetica-Bold').fontSize(10).fillColor(c.ok ? GREEN : RED).text(c.ok ? 'YES' : 'NO', 48, doc.y, { continued: true, width: 40 });
-    doc.font('Helvetica').fillColor(NAVY).text(`   ${c.item}`);
+    const y = doc.y;
+    doc.font('Helvetica-Bold').fontSize(10).fillColor(c.ok ? GREEN : RED).text(c.ok ? 'YES' : 'NO', 48, y, { width: 40 });
+    doc.font('Helvetica').fillColor(NAVY).text(c.item, 92, y, { width: W - 44 });
+    doc.moveDown(0.25);
   });
   doc.moveDown(0.3);
   row('Compliance score', `${r.score}%`, r.score >= 75 ? GREEN : r.score >= 50 ? '#b54708' : RED);
@@ -60,7 +62,7 @@ async function reportPdf(r, out) {
   row('Physically present', r.headcount);
   row('Register claims', r.register_count, mismatch ? RED : undefined);
   if (mismatch) row('Finding', 'Headcount more than 30% below the register – possible proxy attendance', RED);
-  if (r.remarks) { row('Remarks', ''); doc.font('Helvetica').fontSize(10).fillColor(NAVY).text(r.remarks, 48, doc.y, { width: W }); }
+  if (r.remarks) row('Remarks', r.remarks);
 
   heading(`4. Live evidence (${r.evidence.length} file(s))`);
   const photos = r.evidence.filter(e => e.kind === 'photo');
@@ -69,10 +71,10 @@ async function reportPdf(r, out) {
     try {
       const buf = await readAll(e.id);
       if (rowTop + 150 > doc.page.height - 60) { doc.addPage(); rowTop = 60; x = 48; }
-      doc.image(buf, x, rowTop, { fit: [160, 120], align: 'center', valign: 'center' });
-      doc.font('Courier').fontSize(6).fillColor(MUTED).text(e.sha256.slice(0, 32), x, rowTop + 124, { width: 160 });
-      x += 170;
-      if (x + 160 > 48 + W) { x = 48; rowTop += 145; }
+      doc.image(buf, x, rowTop, { fit: [150, 120], align: 'center', valign: 'center' });
+      doc.font('Courier').fontSize(6).fillColor(MUTED).text(e.sha256.slice(0, 32), x, rowTop + 124, { width: 150 });
+      x += 165; // three photos per row
+      if (x + 150 > 48 + W) { x = 48; rowTop += 145; }
     } catch { /* missing file is listed below with its hash */ }
   }
   doc.y = rowTop + (x === 48 ? 0 : 145);

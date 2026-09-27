@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { api } from '../api';
+import { useEffect, useState } from 'react';
+import { api, getSession } from '../api';
 import { GeofenceMap } from '../components/RiskMap';
 import { fmt, km, Status, useApi } from '../components/ui';
 
@@ -55,13 +55,41 @@ function Report({ r }) {
   );
 }
 
+// Demo mode (non-production API): lets the Division file sample reports without a phone.
+function DemoButton({ onDone }) {
+  const [demo, setDemo] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState('');
+  useEffect(() => { api('/auth/config').then((c) => setDemo(!!c.demo)).catch(() => {}); }, []);
+  if (!demo || getSession().user.role !== 'official') return null;
+  const run = async () => {
+    setBusy(true); setMsg('');
+    try {
+      const r = await api('/demo/reports', { method: 'POST' });
+      setMsg(`${r.created.length} demo reports filed`);
+      onDone();
+    } catch (e) { setMsg(e.message); } finally { setBusy(false); }
+  };
+  return (
+    <div className="row">
+      {msg && <span className="muted">{msg}</span>}
+      <button className="btn ghost" disabled={busy} onClick={run} title="Files 3 sample inspections (on-site, headcount mismatch, outside geofence) as if submitted from the mobile app">
+        {busy ? 'Filing reports…' : '🧪 Create demo reports'}
+      </button>
+    </div>
+  );
+}
+
 export default function Reports() {
-  const { data, error, loading } = useApi(() => api('/reports'));
+  const { data, error, loading, reload } = useApi(() => api('/reports'));
   return (
     <>
-      <div className="topline"><div><h1>Geo-tagged inspection reports</h1><div className="muted">Evidence stored in MongoDB GridFS with SHA-256 fingerprints; location checked with PostGIS</div></div></div>
+      <div className="topline">
+        <div><h1>Geo-tagged inspection reports</h1><div className="muted">Evidence stored in MongoDB GridFS with SHA-256 fingerprints; location checked with PostGIS</div></div>
+        <DemoButton onDone={reload} />
+      </div>
       <Status loading={loading} error={error} />
-      {data && data.length === 0 && <div className="card muted">No reports yet. Inspectors submit them from the mobile app.</div>}
+      {data && data.length === 0 && <div className="card muted">No reports yet. Inspectors submit them from the mobile app{getSession().user.role === 'official' ? ' – or use “Create demo reports” to see how they look.' : '.'}</div>}
       <div className="stack">{data && data.map((r) => <Report key={r.id} r={r} />)}</div>
     </>
   );

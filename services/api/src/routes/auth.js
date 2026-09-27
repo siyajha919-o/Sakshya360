@@ -47,7 +47,7 @@ r.get('/me', requireRole(), async (req, res) => {
 // What sign-in methods the clients should offer.
 r.get('/auth/config', (_req, res) => {
   const o = config.oidc;
-  res.json({ sso: { enabled: !!(o.issuer && o.clientId && o.redirectUri), label: o.label }, otp: true });
+  res.json({ sso: { enabled: !!(o.issuer && o.clientId && o.redirectUri), label: o.label }, otp: true, demo: !config.production });
 });
 
 // ---------------------------------------------------------------- beneficiary OTP

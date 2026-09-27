@@ -10,7 +10,7 @@ from typing import List, Optional
 import joblib
 import numpy as np
 import torch
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, Response, UploadFile
 from pydantic import BaseModel, Field
 
 import assign
@@ -109,6 +109,15 @@ class ADistance(BaseModel):
 class StreamRequest(BaseModel):
     url: str
     include_frame: bool = False
+
+
+class DemoPhotoRequest(BaseModel):
+    title: str
+    subtitle: str = ""
+    lines: List[str] = []
+    people: int = Field(6, ge=0, le=24)
+    seed: int = 0
+    view: str = "front"
 
 
 class AssignRequest(BaseModel):
@@ -225,3 +234,10 @@ def stream_count(req: StreamRequest):
         ok, jpg = cv2.imencode(".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
         out["jpeg_b64"] = base64.b64encode(jpg.tobytes()).decode() if ok else None
     return out
+
+
+@app.post("/demo/photo")
+def demo_photo(req: DemoPhotoRequest):
+    """Synthetic, watermarked site photo for demo inspection reports (development only)."""
+    from demo_photo import render
+    return Response(render(req.title, req.subtitle, req.lines, req.people, req.seed, req.view), media_type="image/jpeg")

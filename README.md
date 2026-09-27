@@ -56,6 +56,10 @@ Seeded malpractice for the analytics to find: **P103** copy-paste register, **P1
 
 ### Demo script
 
+No phone handy? Web → *Inspection reports* → **🧪 Create demo reports** (or `npm run demo:reports` while the API runs) files three
+realistic inspections (on site / headcount mismatch + offline sync / 12 km outside the geofence) through the real pipeline.
+A full YouTube demo script is in [docs/demo-video-script.md](docs/demo-video-script.md).
+
 1. Web → **Inspection assignment** → *Generate surprise inspections* (or wait for the daily 09:00 IST run).
 2. Mobile as the assigned inspector → *Start inspection* → photos (watermarked), checklist, headcount → submit. Turn on airplane mode first to see the offline queue; it uploads when you reconnect.
 3. Web dashboard gets the report and any geofence/headcount alerts live → **Reports** → *PDF*.

@@ -16,6 +16,7 @@
     "test": "npm --prefix services/api test && cd services/ml && .venv/bin/python -m unittest discover -s tests",
     "test:e2e": "npm --prefix services/api run test:e2e",
     "app:up": "docker compose -f infra/docker-compose.yml --profile app up -d --build",
-    "ml:retrain-real": "cd services/ml && .venv/bin/python train.py --real"
+    "ml:retrain-real": "cd services/ml && .venv/bin/python train.py --real",
+    "demo:reports": "node services/api/src/db/demoReports.js"
   }
 }

@@ -12,6 +12,7 @@ const { audit, sha256 } = require('../services/audit');
 const notify = require('../services/notify');
 const signing = require('../services/signing');
 const { reportPdf } = require('../services/pdf');
+const { createDemoReports } = require('../services/demo');
 
 // Reports can be queued on the phone while offline; more than this gap between capture and upload is flagged.
 const DELAYED_SYNC_S = 15 * 60;
@@ -135,6 +136,13 @@ r.post('/reports', requireRole('inspector'), upload.fields([{ name: 'photos', ma
   if (report.delayedSync) await notify.alert({ sev: 'info', code: 'OFFLINE_SYNC', projectId: report.projectId, text: `${req.user.name}'s report was captured offline and synced later` });
   notify.refresh('report');
   res.status(201).json({ ...report, pdfUrl: signing.reportPdfUrl(report.id) });
+});
+
+// Demo/development only: file three realistic reports without a phone (see services/demo.js).
+r.post('/demo/reports', requireRole('official'), async (req, res) => {
+  const created = await createDemoReports();
+  await audit(req.user, 'DEMO_REPORTS', { reports: created.map(c => c.reportId) });
+  res.status(201).json({ created });
 });
 
 module.exports = r;
