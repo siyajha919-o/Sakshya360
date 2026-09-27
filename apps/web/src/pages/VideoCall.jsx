@@ -10,6 +10,11 @@ const CHECKS = [
   ['register', 'Attendance register shown on camera'],
 ];
 
+export const JITSI_UNBRANDED = {
+  SHOW_JITSI_WATERMARK: false, SHOW_WATERMARK_FOR_GUESTS: false, SHOW_BRAND_WATERMARK: false, SHOW_POWERED_BY: false,
+  SHOW_PROMOTIONAL_CLOSE_PAGE: false, MOBILE_APP_PROMO: false, HIDE_DEEP_LINKING_LOGO: true, JITSI_WATERMARK_LINK: '', DEFAULT_LOGO_URL: '',
+};
+
 function loadJitsi(domain) {
   if (window.JitsiMeetExternalAPI) return Promise.resolve();
   return new Promise((resolve, reject) => {
@@ -50,7 +55,9 @@ export default function VideoCall() {
         parentNode: container.current,
         width: '100%', height: '100%',
         userInfo: { displayName: `DoSJE – ${getSession().user.name}` },
-        configOverwrite: { prejoinPageEnabled: false, startWithAudioMuted: false, disableDeepLinking: true },
+        configOverwrite: { prejoinPageEnabled: false, prejoinConfig: { enabled: false }, startWithAudioMuted: false, disableDeepLinking: true, disableInviteFunctions: true },
+        // No Jitsi branding inside the Department's verification call.
+        interfaceConfigOverwrite: JITSI_UNBRANDED,
       });
     }).catch((e) => setError(e.message));
     const t0 = Date.now();
@@ -77,7 +84,7 @@ export default function VideoCall() {
     <>
       <div className="topline">
         <div><h1>Random video verification</h1><div className="muted">The server picks a project and a person at random; they have {session?.answerWindowS || 60}s to join from the mobile app</div></div>
-        {!session && <button className="btn saffron" onClick={start}>🎲 Start random VC{params.get('project') ? ` (${params.get('project')})` : ''}</button>}
+        {!session && <button className="btn saffron" onClick={start}>Start random VC{params.get('project') ? ` (${params.get('project')})` : ''}</button>}
       </div>
       {error && <div className="card error" style={{ marginBottom: 12 }}>{error}</div>}
 
@@ -98,12 +105,12 @@ export default function VideoCall() {
             <div>
               <b>Verification checklist</b>
               {CHECKS.map(([k, label]) => (
-                <label key={k} className="chk"><input type="checkbox" checked={!!checks[k]} onChange={(e) => setChecks({ ...checks, [k]: e.target.checked })} /> {label}</label>
+                <label key={k} className="chk"><input type="checkbox" checked={!!checks[k]} onChange={(e) => setChecks({ ...checks, [k]: e.target.checked })} /> {k === 'identity' ? `Face matches ${session.person_name}` : label}</label>
               ))}
             </div>
             <div className="row">
-              <button className="btn green" onClick={() => close(null)}>✓ Close & record</button>
-              <button className="btn red" onClick={() => close('suspicious')}>✗ Flag suspicious</button>
+              <button className="btn green" onClick={() => close(null)}>Close & record</button>
+              <button className="btn red" onClick={() => close('suspicious')}>Flag suspicious</button>
             </div>
             <div className="muted">Room: <span className="mono">{session.room}</span></div>
           </div>

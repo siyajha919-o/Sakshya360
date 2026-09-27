@@ -33,12 +33,13 @@ authInternalUsers:
 pathDefaults:
   runOnInitRestart: yes
 
-# Simulated cameras: any path like P101_1 starts an FFmpeg test source on demand (only while someone watches).
-# Each camera number gets a different hue so feeds are distinguishable. A marker file in /outages/<path>
-# (written by the API's "simulate outage" demo control and by the seed) makes the source refuse to start,
-# so the API's health check sees a genuinely dead stream.
+# Simulated cameras: any path like P101_1 starts camera-sim.sh on demand (only while someone watches). It loops
+# real CCTV-style footage for the camera's role (infra/clips, fetched by download-clips.sh) with a camera label
+# and live clock, or a test pattern if the clips are missing. A marker file in /outages/<path> (written by the
+# API's "cut feed" demo control and by the seed) makes the camera refuse to start, so the API's health check
+# sees a genuinely dead stream.
 paths:
   "~^(P[0-9]+)_([0-9])$":
-    runOnDemand: sh -c 'test ! -e /outages/$MTX_PATH && exec ffmpeg -re -f lavfi -i testsrc2=size=640x360:rate=15 -vf hue=h=$G2*80 -c:v libx264 -preset ultrafast -tune zerolatency -profile:v baseline -pix_fmt yuv420p -g 30 -bf 0 -f rtsp rtsp://localhost:$RTSP_PORT/$MTX_PATH'
+    runOnDemand: sh /camera-sim.sh
     runOnDemandStartTimeout: 8s
     runOnDemandCloseAfter: 15s

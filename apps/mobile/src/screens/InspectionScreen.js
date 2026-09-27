@@ -158,8 +158,8 @@ export default function InspectionScreen({ route, navigation }) {
             <CameraView ref={camera} style={{ height: 260, borderRadius: 10, overflow: 'hidden' }} facing="back" mode={recording ? 'video' : 'picture'} />
           ) : <Button title={t('Allow camera')} onPress={requestCam} />}
           <View style={[s.row, { marginTop: 8 }]}>
-            <Button style={{ flex: 1 }} tone="saffron" title={`📸 ${t('Photo')}`} onPress={takePhoto} busy={shooting} disabled={!camPerm?.granted || recording} />
-            <Button style={{ flex: 1 }} tone={recording ? 'red' : 'ghost'} title={recording ? `■ ${t('Stop')}` : video ? `🎥 ${t('Re-record')}` : `🎥 ${t('20s video')}`} onPress={recordVideo} disabled={!camPerm?.granted || shooting} />
+            <Button style={{ flex: 1 }} tone="saffron" title={t('Photo')} onPress={takePhoto} busy={shooting} disabled={!camPerm?.granted || recording} />
+            <Button style={{ flex: 1 }} tone={recording ? 'red' : 'ghost'} title={recording ? t('Stop') : video ? t('Re-record') : t('20s video')} onPress={recordVideo} disabled={!camPerm?.granted || shooting} />
           </View>
           <ScrollView horizontal style={{ marginTop: 8 }}>
             {photos.map((p) => <Image key={p.uri} source={{ uri: p.uri }} style={{ width: 90, height: 120, borderRadius: 8, marginRight: 6 }} />)}

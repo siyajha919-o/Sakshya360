@@ -92,7 +92,7 @@ export default function Assignments() {
           <div className="row">
             <label className="muted">Inspections</label>
             <input type="number" min="1" max="20" value={count} onChange={(e) => setCount(+e.target.value)} style={{ width: 70 }} />
-            <button className="btn saffron" onClick={run} disabled={busy}>{busy ? 'Solving…' : '🎲 Generate surprise inspections'}</button>
+            <button className="btn saffron" onClick={run} disabled={busy}>{busy ? 'Solving…' : 'Generate surprise inspections'}</button>
           </div>
         )}
       </div>
@@ -115,7 +115,7 @@ export default function Assignments() {
             <h2>Randomised priorities</h2>
             <div className="log">{Object.entries(result.solver.priorities).map(([p, v]) => `${p}  ${v}`).join('\n')}</div>
             <h2 style={{ marginTop: 12 }}>Excluded pairs ({result.solver.excluded_pairs.length})</h2>
-            <div className="log">{result.solver.excluded_pairs.map((e) => `${e.project_id} ✗ ${e.inspector_id}: ${e.reasons.join(', ')}`).join('\n') || 'none'}</div>
+            <div className="log">{result.solver.excluded_pairs.map((e) => `${e.project_id} / ${e.inspector_id}: ${e.reasons.join(', ')}`).join('\n') || 'none'}</div>
           </div>
         </div>
       )}

@@ -48,14 +48,14 @@ export default function AttendanceScreen() {
       if (mode === 'enroll') {
         form.append('image', filePart(img.uri, 'face.jpg', 'image/jpeg'));
         await api(`/attendance/enroll/${person.id}`, { form });
-        Alert.alert(t('Face enrolled'), person.name);
+        Alert.alert(t('Face enrolled'), `${person.name} (${t(person.kind)})`);
       } else {
         const loc = await location();
         form.append('selfie', filePart(img.uri, 'selfie.jpg', 'image/jpeg'));
         form.append('data', JSON.stringify({ personId: person.id, ...loc }));
         const r = await api('/attendance/checkin', { form });
-        Alert.alert(r.accepted ? `✅ ${t('Attendance recorded')}` : `❌ ${t('Check-in rejected')}`,
-          `${r.reason ? t(r.reason) + '\n' : ''}${t('Face score {score} · {m} m from site', { score: r.faceScore ?? '—', m: r.distanceM })}`);
+        Alert.alert(r.accepted ? t('Attendance recorded') : t('Check-in rejected'),
+          `${person.name}\n${r.reason ? t(r.reason) + '\n' : ''}${t('Face score {score} · {m} m from site', { score: r.faceScore ?? '—', m: r.distanceM })}`);
       }
       setCapture(null);
       load();
@@ -100,10 +100,18 @@ export default function AttendanceScreen() {
       <Modal visible={!!capture} animationType="slide" onRequestClose={() => setCapture(null)}>
         <View style={{ flex: 1, backgroundColor: '#000' }}>
           {camPerm?.granted ? <CameraView ref={camera} style={{ flex: 1 }} facing="front" /> : <Button title={t('Allow camera')} onPress={requestCam} />}
+          {/* Who is being verified, shown over the live camera so staff capture the right person. */}
+          {capture && (
+            <View pointerEvents="none" style={{ position: 'absolute', top: 48, left: 16, right: 16, backgroundColor: 'rgba(11,29,58,0.85)', borderRadius: 12, padding: 12 }}>
+              <Text style={{ color: '#d0d5dd', fontSize: 12, fontWeight: '600' }}>{capture.mode === 'enroll' ? t('Face enrolment') : t('Face verification')}</Text>
+              <Text style={{ color: '#fff', fontSize: 22, fontWeight: '800' }}>{capture.person.name}</Text>
+              <Text style={{ color: '#d0d5dd', fontSize: 13 }}>{t(capture.person.kind)} · {capture.person.id}</Text>
+            </View>
+          )}
           <View style={{ padding: 16, backgroundColor: C.navy, gap: 8 }}>
             <Text style={{ color: '#fff', fontWeight: '700' }}>{capture?.mode === 'enroll' ? t('Enrol') : t('Verify')}: {capture?.person.name}</Text>
             <Text style={{ color: '#d0d5dd', fontSize: 12 }}>{t('One face, well lit, looking at the camera.')}</Text>
-            <Button tone="saffron" title={`📸 ${t('Capture')}`} onPress={shoot} busy={busy} />
+            <Button tone="saffron" title={t('Capture')} onPress={shoot} busy={busy} />
             <Button tone="ghost" title={t('Cancel')} onPress={() => setCapture(null)} />
           </View>
         </View>

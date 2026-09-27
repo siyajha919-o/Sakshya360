@@ -73,7 +73,7 @@ export default function PublicFeedback() {
         <div className="tricolor" />
         {!info && !error && <div className="muted">…</div>}
         {!info && error && <div className="error">{t.invalid} ({error})</div>}
-        {info && done && <div><h1>✅ {t.done}</h1><div className="muted">{t.ref}: <b className="mono">{done}</b></div></div>}
+        {info && done && <div><h1>{t.done}</h1><div className="muted">{t.ref}: <b className="mono">{done}</b></div></div>}
         {info && !done && (
           <>
             <div><h1>{t.title}</h1><div><b>{info.project.name}</b></div><div className="muted">{info.project.district}, {info.project.state}</div></div>

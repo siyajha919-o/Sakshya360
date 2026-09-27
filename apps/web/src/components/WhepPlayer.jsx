@@ -46,7 +46,7 @@ const WhepPlayer = forwardRef(function WhepPlayer({ camera }, ref) {
   return (
     <>
       <video ref={videoRef} autoPlay muted playsInline />
-      <span className={`state ${state === 'live' ? 'live' : ''}`}>{state === 'live' ? '● LIVE' : state.toUpperCase()}</span>
+      <span className={`state ${state === 'live' ? 'live' : ''}`}>{state === 'live' ? <><i className="dot on pulse" />LIVE</> : state.toUpperCase()}</span>
       {state !== 'live' && (
         <div className="msg">
           {state === 'offline' ? 'Camera reported offline – downtime feeds the risk model'

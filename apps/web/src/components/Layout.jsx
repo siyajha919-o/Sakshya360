@@ -24,8 +24,8 @@ export default function Layout() {
       setToasts((xs) => [...xs.slice(-3), { ...t, id }]);
       setTimeout(() => setToasts((xs) => xs.filter((x) => x.id !== id)), 6000);
     };
-    const onAlert = (a) => push({ sev: a.sev, text: `${a.sev === 'info' ? 'ℹ' : '⚠'} ${a.projectId}: ${a.text}` });
-    const onReport = (r) => push({ sev: 'info', text: `📋 New report from ${r.inspector} (${r.projectId})` });
+    const onAlert = (a) => push({ sev: a.sev, text: `${a.projectId}: ${a.text}` });
+    const onReport = (r) => push({ sev: 'info', text: `New report from ${r.inspector} (${r.projectId})` });
     socket.on('alert', onAlert);
     socket.on('report:new', onReport);
     return () => { socket.off('alert', onAlert); socket.off('report:new', onReport); };

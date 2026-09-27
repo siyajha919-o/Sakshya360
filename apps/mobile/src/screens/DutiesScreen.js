@@ -75,7 +75,7 @@ export default function DutiesScreen({ navigation }) {
           <Text style={s.muted}>{a.scheme} · {a.ngo}</Text>
           <Text style={s.muted}>{a.district}, {a.state} · {t('{km} km from base', { km: a.distance_km })} · {t('assigned {when}', { when: fmt(a.created_at) })}</Text>
           <View style={[s.row, { marginTop: 10 }]}>
-            <Button tone="ghost" style={{ flex: 1 }} title={`🧭 ${t('Navigate')}`}
+            <Button tone="ghost" style={{ flex: 1 }} title={t('Navigate')}
               onPress={() => Linking.openURL(`https://www.openstreetmap.org/directions?to=${a.lat}%2C${a.lng}`)} />
             <Button tone="green" style={{ flex: 1 }} title={t('Start inspection')} onPress={() => start(a)} />
           </View>

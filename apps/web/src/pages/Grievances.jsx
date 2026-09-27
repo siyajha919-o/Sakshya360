@@ -29,7 +29,7 @@ function Item({ g, onDone }) {
       </div>
       <div className="muted" style={{ marginTop: 4 }}>
         {fmt(g.created_at)} · {g.channel === 'qr' ? 'Anonymous (centre QR code)' : `${g.person_name} (beneficiary, OTP-verified)`}
-        {g.rating && ` · rating ${'★'.repeat(g.rating)}${'☆'.repeat(5 - g.rating)}`}
+        {g.rating && ` · rating ${g.rating}/5`}
         {g.present === false && ' · says not present today'}
         {g.services_ok === false && ' · services not received'}
       </div>
@@ -66,7 +66,7 @@ export default function Grievances() {
           <div className="muted">From beneficiaries in the mobile app (OTP-verified) and anonymous QR codes at each centre. Serious grievances raise live alerts and increase the project's risk score.</div>
         </div>
         <div className="row">
-          {project && <button className="btn ghost sm" onClick={() => setFilter('project', '')}>Project {project} ✕</button>}
+          {project && <button className="btn ghost sm" onClick={() => setFilter('project', '')}>Project {project} · clear</button>}
           <select value={status} onChange={(e) => setFilter('status', e.target.value)}>
             <option value="">All statuses</option>
             <option value="open">Open</option>

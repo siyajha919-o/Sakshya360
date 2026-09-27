@@ -8,7 +8,7 @@ function Health({ camera }) {
   const o = camera.last_observation;
   return (
     <div className="muted" style={{ fontSize: 12, marginTop: 4 }}>
-      {camera.online ? '🟢 Online' : `🔴 Offline${camera.offline_since ? ` since ${fmt(camera.offline_since)}` : ''}`}
+      <i className={`dot ${camera.online ? 'on' : 'off'}`} />{camera.online ? 'Online' : `Offline${camera.offline_since ? ` since ${fmt(camera.offline_since)}` : ''}`}
       {camera.last_checked && ` · checked ${fmt(camera.last_checked)}`}
       {!camera.online && camera.last_error && ` · ${camera.last_error}`}
       {camera.source === 'simulated' && ' · simulated feed'}
@@ -68,10 +68,10 @@ function CameraTile({ camera, onChange }) {
       <div className="row between" style={{ marginTop: 8 }}>
         <span className="muted">{camera.project_name}</span>
         <div className="row">
-          <button className="btn ghost sm" disabled={!camera.online || busy} onClick={() => analyze(false)}>🧠 Count people</button>
-          <button className="btn ghost sm" disabled={!camera.online || busy} onClick={() => analyze(true)}>📸 Save evidence</button>
+          <button className="btn ghost sm" disabled={!camera.online || busy} onClick={() => analyze(false)}>Count people</button>
+          <button className="btn ghost sm" disabled={!camera.online || busy} onClick={() => analyze(true)}>Save evidence</button>
           {isOfficial && camera.source === 'simulated' && (
-            <button className="btn ghost sm" disabled={busy} title="Demo: cut or restore this simulated feed" onClick={() => outage(camera.online)}>{camera.online ? '✂ Cut feed' : '↺ Restore'}</button>
+            <button className="btn ghost sm" disabled={busy} title="Demo: cut or restore this simulated feed" onClick={() => outage(camera.online)}>{camera.online ? 'Cut feed' : 'Restore feed'}</button>
           )}
         </div>
       </div>

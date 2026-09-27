@@ -56,7 +56,8 @@ Each scene has four parts:
      - Phone → log in as the inspector who got a duty → *Start inspection* → take 2–3 photos → switch on *simulate being on site* → headcount **8**, register **25** → *Submit*.
 
    Click the button **before** you start recording, so the live alerts for these reports don't appear mid-scene. Or click it on camera during Scene 9 to show the alerts arriving live.
-3. On a second phone (or the same phone later), log in as NGO `p101@ngo.sakshya360.in` and keep the **Video calls** tab open for Scene 8.
+3. On a second phone (or the same phone later), log in as NGO `p101@ngo.sakshya360.in` and keep the **Video calls** tab open for Scene 10.
+   **Important:** meet.jit.si only starts a call once a moderator has logged in. The first time you start a random VC, click **Log-in** inside the call panel and sign in with Google or GitHub. After that the call starts as soon as the NGO answers. Do one practice call before recording.
 4. Browser:
    - Chrome, zoom 110%, bookmarks bar hidden, a clean profile (no extensions).
    - Open two windows: A = `official@dosje.gov.in`, B = an Incognito window for the state/district logins.
@@ -158,7 +159,7 @@ Each scene has four parts:
 
 **TEXT:** `WebRTC live · AI people count · auto health checks`
 
-> Note: the demo cameras are simulated test patterns, so the people count on them is 0. Say "on a real camera feed…" or show a real IP camera if you have one.
+> Note: the demo cameras loop real CCTV-style footage (entrance, dormitory, kitchen/store, classroom) with a camera label and live IST clock. Use **Count people** on a **Main Gate** or **Kitchen** camera: the detector finds people walking or standing, but misses people sitting down, so it undercounts the Activity Hall.
 
 ---
 
@@ -307,6 +308,8 @@ Features shown:
 • Random video verification calls that ring the centre's phone
 • Beneficiary grievances via anonymous QR code or OTP login, in Hindi and English
 • Division / State / District access control and a hash-chained audit trail
+
+CCTV demo footage: Intel IoT DevKit sample videos (CC BY 4.0).
 
 Tech: React, React Native (Expo), Node.js, PostgreSQL + PostGIS, MongoDB GridFS, FastAPI, scikit-learn, PyTorch, OpenCV, OR-Tools, MediaMTX, Jitsi.
 

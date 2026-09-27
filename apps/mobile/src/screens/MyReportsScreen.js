@@ -57,7 +57,7 @@ export default function MyReportsScreen() {
           <Text style={s.muted}>{fmt(r.captured_at || r.submitted_at)} · {r.district}{r.delayed_sync ? ` · ${t('synced later')}` : ''}</Text>
           <Text style={s.muted}>{t('Compliance {score}% · headcount {h}/{r} · {n} evidence file(s)', { score: r.score, h: r.headcount, r: r.register_count, n: r.evidence.length })}</Text>
           <Text style={[s.muted, { fontSize: 10, marginTop: 4 }]}>sig {r.signature}</Text>
-          <Button tone="ghost" style={{ marginTop: 8 }} title={`⬇ ${t('Download PDF')}`} onPress={() => Linking.openURL(absoluteUrl(r.pdfUrl))} />
+          <Button tone="ghost" style={{ marginTop: 8 }} title={t('Download PDF')} onPress={() => Linking.openURL(absoluteUrl(r.pdfUrl))} />
         </View>
       ))}
     </ScrollView>

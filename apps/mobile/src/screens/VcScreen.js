@@ -7,6 +7,7 @@ import { api, getSocket } from '../api';
 import { Button, fmt, Pill } from '../components';
 import { jitsiUrl } from '../jitsi';
 import { t, useLang } from '../i18n';
+import { Ionicons } from '@expo/vector-icons';
 import { C, s } from '../theme';
 
 export default function VcScreen() {
@@ -72,7 +73,7 @@ export default function VcScreen() {
       <Modal visible={!!incoming} transparent animationType="fade">
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,.7)', justifyContent: 'center', padding: 24 }}>
           <View style={[s.card, { alignItems: 'center' }]}>
-            <Text style={{ fontSize: 40 }}>📞</Text>
+            <Ionicons name="call" size={40} color={C.green} />
             <Text style={s.h1}>{t('Incoming DoSJE verification call')}</Text>
             <Text style={[s.muted, { textAlign: 'center', marginVertical: 8 }]}>{t('From {name}', { name: incoming?.caller_name })}{'\n'}{t('Requested person')}: <Text style={{ fontWeight: '700' }}>{incoming?.person_name}</Text> ({t(incoming?.person_kind || '')})</Text>
             <Button tone="green" title={t('Answer now')} onPress={answer} style={{ alignSelf: 'stretch' }} />

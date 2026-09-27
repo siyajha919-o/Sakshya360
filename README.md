@@ -29,7 +29,7 @@ infra         docker-compose: Postgres/PostGIS, MongoDB, MediaMTX (+ app service
 Prerequisites: Node 20+, Docker, [uv](https://docs.astral.sh/uv/) (Python 3.11).
 
 ```bash
-npm run setup          # install all packages, create the ML venv, download face models, train models
+npm run setup          # install all packages, create the ML venv, download face models, train models, fetch CCTV clips
 npm run infra:up       # Postgres, MongoDB, MediaMTX
 npm run ml             # ML service  → :8001
 npm run api            # API         → :4000 (migrates + seeds on first start)
@@ -38,6 +38,9 @@ npm run mobile         # Expo; scan the QR code (phone on the same Wi-Fi)
 ```
 
 Upgrading an existing database from an older checkout: `npm run api:reseed` (resets demo data).
+
+The simulated cameras loop real CCTV-style footage (`npm run clips` fetches it; credits in `infra/clips/CREDITS.md`)
+with a camera label and live IST clock, or a test pattern if the clips are missing.
 
 For **live CCTV on a phone**, `npm run infra:up` advertises the Mac's Wi-Fi IP to the camera server automatically (override with `HOST_LAN_IP=…`). Re-run it if you change networks.
 
@@ -119,7 +122,9 @@ Before going live:
   so adapt it to the NIC/state SMS gateway. Dev OTP display turns off automatically in production.
 - **Cameras**: add real cameras as MediaMTX paths (`source: rtsp://…`), with rows in `cameras` (`source = 'rtsp'`).
   Restrict the MediaMTX control API in `infra/mediamtx.yml` to the API server's address.
-- **Jitsi**: point `JITSI_DOMAIN` at a self-hosted Jitsi for data residency.
+- **Jitsi**: the public meet.jit.si requires the first participant (the official) to log in as moderator before a call starts,
+  and adds its own branding (switched off where the server allows it). Point `JITSI_DOMAIN` at a self-hosted Jitsi or use
+  8x8 Jitsi-as-a-Service for unbranded, login-free calls and data residency.
 - **Mobile**: set `EXPO_PUBLIC_API_URL` in `apps/mobile/eas.json`, then `eas build --profile production`.
 - On Linux hosts, make `infra/outages` writable by UID 1000 (the API container user).
 

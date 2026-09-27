@@ -18,7 +18,7 @@ function start(){
   pc.addTransceiver('video',{direction:'recvonly'});pc.addTransceiver('audio',{direction:'recvonly'});
   pc.ontrack=function(e){document.getElementById('v').srcObject=e.streams[0];};
   pc.onconnectionstatechange=function(){
-    if(pc.connectionState==='connected'){s.textContent='● '+L.live;s.style.color='#12b76a';}
+    if(pc.connectionState==='connected'){s.innerHTML='<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#12b76a;margin-right:6px"></span>'+L.live;s.style.color='#12b76a';}
     if(pc.connectionState==='failed'){s.textContent=L.retry;setTimeout(restart,3000);}
   };
   pc.createOffer().then(function(o){return pc.setLocalDescription(o);}).then(function(){

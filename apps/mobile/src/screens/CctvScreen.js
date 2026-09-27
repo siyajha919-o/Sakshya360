@@ -50,7 +50,7 @@ export default function CctvScreen({ navigation }) {
           {list.map((c) => (
             <Pressable key={c.id} disabled={!c.online} onPress={() => navigation.navigate('Camera', { camera: c })} style={[s.between, { paddingVertical: 8, borderTopWidth: 1, borderColor: C.line }]}>
               <View style={{ flex: 1 }}>
-                <Text style={{ color: C.text, fontWeight: '600' }}>{c.online ? '▶ ' : ''}{c.label}</Text>
+                <Text style={{ color: C.text, fontWeight: '600' }}>{c.label}</Text>
                 <Text style={s.muted}>
                   {c.online ? (c.last_checked ? t('checked {when}', { when: fmt(c.last_checked) }) : '') : t('offline since {when}', { when: c.offline_since ? fmt(c.offline_since) : '—' })}
                   {c.last_observation ? ` · ${t('{n} people seen', { n: c.last_observation.persons })}` : ''}

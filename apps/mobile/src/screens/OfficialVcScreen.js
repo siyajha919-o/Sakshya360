@@ -74,7 +74,7 @@ export default function OfficialVcScreen({ route, navigation }) {
             <Button tone="ghost" title={t('Any project')} onPress={() => navigation.setParams({ projectId: undefined })} />
           </View>
         )}
-        <Button tone="saffron" title={`🎲 ${t('Start random VC')}`} onPress={start} busy={busy} />
+        <Button tone="saffron" title={t('Start random VC')} onPress={start} busy={busy} />
         {!!error && <Text style={[s.error, { marginTop: 8 }]}>{error}</Text>}
       </View>
       <Text style={s.h2}>{t('Call history')}</Text>
@@ -103,13 +103,13 @@ export default function OfficialVcScreen({ route, navigation }) {
                 : <Pill tone={answered > call.answerWindowS ? 'amber' : 'green'}>{t('Answered in {s}s', { s: answered })}</Pill>}
               {CHECKS.map(([k, label]) => (
                 <View key={k} style={[s.between, { paddingVertical: 4 }]}>
-                  <Text style={{ color: C.text, flex: 1 }}>{t(label)}</Text>
+                  <Text style={{ color: C.text, flex: 1 }}>{k === 'identity' ? t('Face matches {name}', { name: call.person_name }) : t(label)}</Text>
                   <Switch value={!!checks[k]} onValueChange={(v) => setChecks({ ...checks, [k]: v })} />
                 </View>
               ))}
               <View style={[s.row, { marginTop: 8 }]}>
-                <Button style={{ flex: 1 }} tone="green" title={`✓ ${t('Close & record')}`} busy={busy} onPress={() => close(null)} />
-                <Button style={{ flex: 1 }} tone="red" title={`✗ ${t('Flag suspicious')}`} disabled={busy} onPress={() => close('suspicious')} />
+                <Button style={{ flex: 1 }} tone="green" title={t('Close & record')} busy={busy} onPress={() => close(null)} />
+                <Button style={{ flex: 1 }} tone="red" title={t('Flag suspicious')} disabled={busy} onPress={() => close('suspicious')} />
               </View>
             </ScrollView>
           </View>

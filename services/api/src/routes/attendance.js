@@ -74,7 +74,7 @@ r.post('/attendance/checkin', ngo, upload.single('selfie'), async (req, res) => 
   invalidate();
   await audit(req.user, 'ATTENDANCE', { checkinId: Number(out.id), personId: person.id, accepted, faceScore: face.score, distanceM: person.distance_m });
   if (!accepted) await notify.alert({ sev: 'med', code: 'ATTENDANCE_REJECTED', projectId: req.user.projectId, text: `${person.name}: ${reason}` });
-  res.json({ accepted, reason, distanceM: person.distance_m, withinFence, faceScore: face.score, faceMatch: face.match });
+  res.json({ accepted, reason, personId: person.id, personName: person.name, distanceM: person.distance_m, withinFence, faceScore: face.score, faceMatch: face.match });
 });
 
 module.exports = r;

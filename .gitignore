@@ -14,3 +14,5 @@ infra/outages/*
 apps/mobile/.expo/
 services/ml/labelled.jsonl
 _legacy_prototype/backend/data/
+infra/clips/*.mp4
+infra/clips/*.ttf

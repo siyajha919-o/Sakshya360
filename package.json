@@ -12,11 +12,12 @@
     "api:reseed": "node services/api/src/db/seed.js --force",
     "web": "npm --prefix apps/web run dev",
     "mobile": "npm --prefix apps/mobile start",
-    "setup": "npm --prefix services/api install && npm --prefix apps/web install && npm --prefix apps/mobile install && npm run ml:setup",
+    "setup": "npm --prefix services/api install && npm --prefix apps/web install && npm --prefix apps/mobile install && npm run ml:setup && npm run clips",
     "test": "npm --prefix services/api test && cd services/ml && .venv/bin/python -m unittest discover -s tests",
     "test:e2e": "npm --prefix services/api run test:e2e",
     "app:up": "docker compose -f infra/docker-compose.yml --profile app up -d --build",
     "ml:retrain-real": "cd services/ml && .venv/bin/python train.py --real",
-    "demo:reports": "node services/api/src/db/demoReports.js"
+    "demo:reports": "node services/api/src/db/demoReports.js",
+    "clips": "sh infra/download-clips.sh"
   }
 }

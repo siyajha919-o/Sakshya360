@@ -70,9 +70,9 @@ tr.click { cursor: pointer; } tr.click:hover { background: #f9fafb; }
 .cam { background: #000; border-radius: 10px; overflow: hidden; position: relative; aspect-ratio: 16 / 9; }
 .cam video { width: 100%; height: 100%; object-fit: contain; display: block; }
 .cam canvas.overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.cam .tag { position: absolute; left: 8px; top: 8px; background: rgba(0,0,0,.6); color: #fff; font-size: 12px; padding: 2px 8px; border-radius: 6px; }
-.cam .state { position: absolute; right: 8px; top: 8px; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: #555; color: #fff; }
-.cam .state.live { background: var(--red); }
+.cam .tag { position: absolute; left: 8px; bottom: 36px; background: rgba(0,0,0,.6); color: #fff; font-size: 12px; padding: 2px 8px; border-radius: 6px; }
+.cam .state { position: absolute; left: 8px; bottom: 8px; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; background: rgba(0,0,0,.65); color: #fff; display: inline-flex; align-items: center; gap: 6px; letter-spacing: .04em; }
+.cam .state.live { background: rgba(0,0,0,.65); }
 .cam .msg { position: absolute; inset: 0; display: grid; place-items: center; color: #aaa; font-size: 13px; text-align: center; padding: 20px; }
 
 .jitsi { height: 520px; border-radius: 10px; overflow: hidden; background: #111; }
@@ -95,3 +95,13 @@ tr.click { cursor: pointer; } tr.click:hover { background: #f9fafb; }
 .toast div.high { border-left: 4px solid var(--red); }
 .card.click { cursor: pointer; } .card.click:hover { border-color: var(--navy-2); }
 textarea { font: inherit; }
+
+/* Status dots (camera online/offline, live stream) */
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; flex: none; background: var(--muted); }
+.dot.on { background: #12b76a; box-shadow: 0 0 0 2px rgba(18,183,106,.25); }
+.dot.off { background: var(--red); box-shadow: 0 0 0 2px rgba(217,45,32,.2); }
+.cam .state .dot { margin-right: 0; }
+.dot.pulse { animation: dot-pulse 1.6s ease-in-out infinite; }
+@keyframes dot-pulse { 0%, 100% { box-shadow: 0 0 0 2px rgba(18,183,106,.35); } 50% { box-shadow: 0 0 0 5px rgba(18,183,106,0); } }
+@media (prefers-reduced-motion: reduce) { .dot.pulse { animation: none; } }
+

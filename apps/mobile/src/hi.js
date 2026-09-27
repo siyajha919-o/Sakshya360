@@ -112,6 +112,7 @@ export default {
   'Limited to project {id}': 'केवल परियोजना {id}', 'Any project': 'कोई भी परियोजना', 'Start random VC': 'औचक वीडियो कॉल शुरू करें',
   'answered in {s}s': '{s} सेकंड में उत्तर', 'Not answered in time': 'समय पर उत्तर नहीं', 'Ringing on their phone…': 'उनके फ़ोन पर घंटी बज रही है…',
   'Answered in {s}s': '{s} सेकंड में उत्तर दिया', 'Close & record': 'बंद करें और दर्ज करें', 'Flag suspicious': 'संदिग्ध चिह्नित करें',
+  'Sakshya360 · secure call': 'Sakshya360 · सुरक्षित कॉल', 'Face enrolment': 'चेहरा पंजीकरण', 'Face verification': 'चेहरा सत्यापन', 'Face matches {name}': 'चेहरा {name} से मेल खाता है',
   'Face matches registered person': 'चेहरा पंजीकृत व्यक्ति से मेल खाता है', 'Premises / signboard shown live': 'परिसर / साइनबोर्ड लाइव दिखाया',
   'Beneficiaries physically present': 'लाभार्थी वास्तव में मौजूद', 'Attendance register shown on camera': 'उपस्थिति रजिस्टर कैमरे पर दिखाया',
   'Surprise inspections assigned': 'औचक निरीक्षण सौंपे गए', '{n} inspection(s) assigned · solver {status} · seed {seed}': '{n} निरीक्षण सौंपे गए · सॉल्वर {status} · सीड {seed}',

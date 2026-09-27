@@ -49,10 +49,10 @@ export default function ProjectDetail() {
         </div>
         <div className="row">
           <RiskPill analysis={a} />
-          <button className="btn ghost" onClick={() => printQrPoster(p)}>🗣️ Feedback QR poster</button>
+          <button className="btn ghost" onClick={() => printQrPoster(p)}>Feedback QR poster</button>
           <button className="btn ghost" onClick={() => navigate(`/grievances?project=${p.id}`)}>Grievances ({p.grievances_open})</button>
-          <button className="btn ghost" onClick={() => navigate(`/cctv?project=${p.id}`)}>📹 CCTV</button>
-          <button className="btn saffron" onClick={() => navigate(`/vc?project=${p.id}`)}>📞 Random VC</button>
+          <button className="btn ghost" onClick={() => navigate(`/cctv?project=${p.id}`)}>CCTV</button>
+          <button className="btn saffron" onClick={() => navigate(`/vc?project=${p.id}`)}>Random VC</button>
         </div>
       </div>
 

@@ -24,20 +24,20 @@ function Report({ r }) {
         </div>
         <div className="row">
           {r.delayed_sync && <span className="pill amber">Offline sync</span>}
-          <span className={`pill ${r.within_fence ? 'green' : 'red'}`}>{r.within_fence ? 'On-site ✓' : 'Outside geofence'}</span>
+          <span className={`pill ${r.within_fence ? 'green' : 'red'}`}>{r.within_fence ? 'On-site' : 'Outside geofence'}</span>
           {r.simulated && <span className="pill amber">Demo location</span>}
           <span className={`pill ${r.score >= 75 ? 'green' : r.score >= 50 ? 'amber' : 'red'}`}>Compliance {r.score}%</span>
-          <a className="btn ghost sm" href={r.pdfUrl} target="_blank" rel="noreferrer">⬇ PDF</a>
+          <a className="btn ghost sm" href={r.pdfUrl} target="_blank" rel="noreferrer">Download PDF</a>
         </div>
       </div>
       <div className="grid g2" style={{ marginTop: 12 }}>
         <div>
           <GeofenceMap site={[r.site_lat, r.site_lng]} geofence={250} point={[r.lat, r.lng]} withinFence={r.within_fence} />
-          <div className="muted" style={{ marginTop: 6 }}>📍 {r.lat.toFixed(5)}, {r.lng.toFixed(5)} ±{Math.round(r.accuracy_m || 0)} m · {km(r.distance_m)} from registered site</div>
+          <div className="muted" style={{ marginTop: 6 }}>GPS {r.lat.toFixed(5)}, {r.lng.toFixed(5)} ±{Math.round(r.accuracy_m || 0)} m · {km(r.distance_m)} from registered site</div>
         </div>
         <div className="stack">
           <div>Headcount observed <b>{r.headcount}</b> · register claims <b>{r.register_count}</b> {mismatch && <span className="pill red">Mismatch</span>}</div>
-          <div>{r.checklist.map((c) => <div key={c.item} style={{ fontSize: 13 }}>{c.ok ? '✅' : '❌'} {c.item}</div>)}</div>
+          <div>{r.checklist.map((c) => <div key={c.item} style={{ fontSize: 13 }}><span className={`pill ${c.ok ? 'green' : 'red'}`} style={{ minWidth: 34, textAlign: 'center', marginRight: 6 }}>{c.ok ? 'Yes' : 'No'}</span>{c.item}</div>)}</div>
           {r.remarks && <div style={{ fontSize: 14 }}>“{r.remarks}”</div>}
         </div>
       </div>
@@ -74,7 +74,7 @@ function DemoButton({ onDone }) {
     <div className="row">
       {msg && <span className="muted">{msg}</span>}
       <button className="btn ghost" disabled={busy} onClick={run} title="Files 3 sample inspections (on-site, headcount mismatch, outside geofence) as if submitted from the mobile app">
-        {busy ? 'Filing reports…' : '🧪 Create demo reports'}
+        {busy ? 'Filing reports…' : 'Create demo reports'}
       </button>
     </div>
   );

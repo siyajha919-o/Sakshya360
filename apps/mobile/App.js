@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
+import { Ionicons } from '@expo/vector-icons';
 import { loadSession, saveSession } from './src/api';
 import { LangToggle } from './src/components';
 import { loadLang, t, useLang } from './src/i18n';
@@ -40,17 +41,17 @@ const header = (onLogout) => ({
     </View>
   ),
 });
-const icon = (emoji) => () => <Text style={{ fontSize: 20 }}>{emoji}</Text>;
+const icon = (name) => ({ color, size }) => <Ionicons name={name} color={color} size={size} />;
 
-// [route name, component, title, emoji] per role
+// [route name, component, title, Ionicons icon] per role
 const TABS = {
-  inspector: [['Duties', DutiesScreen, 'My duties', '🗂️'], ['Reports', MyReportsScreen, 'My reports', '📋']],
-  ngo: [['Attendance', AttendanceScreen, 'Attendance', '✅'], ['VC', VcScreen, 'Video calls', '📞']],
+  inspector: [['Duties', DutiesScreen, 'My duties', 'briefcase-outline'], ['Reports', MyReportsScreen, 'My reports', 'document-text-outline']],
+  ngo: [['Attendance', AttendanceScreen, 'Attendance', 'checkmark-done-outline'], ['VC', VcScreen, 'Video calls', 'call-outline']],
   monitor: [
-    ['Dashboard', OfficialDashboardScreen, 'Dashboard', '📊'], ['CCTV', CctvScreen, 'CCTV', '📹'], ['VC', OfficialVcScreen, 'Random VC', '📞'],
-    ['Assign', AssignScreen, 'Inspections', '🎲'], ['Grievances', GrievancesScreen, 'Grievances', '🗣️'],
+    ['Dashboard', OfficialDashboardScreen, 'Dashboard', 'stats-chart-outline'], ['CCTV', CctvScreen, 'CCTV', 'videocam-outline'], ['VC', OfficialVcScreen, 'Random VC', 'call-outline'],
+    ['Assign', AssignScreen, 'Inspections', 'shuffle-outline'], ['Grievances', GrievancesScreen, 'Grievances', 'chatbubbles-outline'],
   ],
-  beneficiary: [['Feedback', FeedbackScreen, 'Feedback', '🗣️']],
+  beneficiary: [['Feedback', FeedbackScreen, 'Feedback', 'chatbubble-ellipses-outline']],
 };
 const tabsFor = (role) => TABS[MONITOR_ROLES.includes(role) ? 'monitor' : role] || [];
 
@@ -58,8 +59,8 @@ function RoleTabs({ role, onLogout }) {
   useLang();
   return (
     <Tabs.Navigator screenOptions={{ ...header(onLogout), tabBarActiveTintColor: C.navy }}>
-      {tabsFor(role).map(([name, component, title, emoji]) => (
-        <Tabs.Screen key={name} name={name} component={component} options={{ title: t(title), tabBarIcon: icon(emoji) }} />
+      {tabsFor(role).map(([name, component, title, iconName]) => (
+        <Tabs.Screen key={name} name={name} component={component} options={{ title: t(title), tabBarIcon: icon(iconName) }} />
       ))}
     </Tabs.Navigator>
   );

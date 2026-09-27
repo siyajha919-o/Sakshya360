@@ -42,8 +42,8 @@ export default function ProjectScreen({ route, navigation }) {
       <Text style={s.h1}>{p.name}</Text>
       <Text style={[s.muted, { marginBottom: 10 }]}>{p.id} · {p.scheme} · {p.ngo} · {p.district}, {p.state}</Text>
       <View style={[s.row, { marginBottom: 12 }]}>
-        <Button style={{ flex: 1 }} tone="saffron" title={`📞 ${t('Random VC')}`} onPress={() => navigation.navigate('Home', { screen: 'VC', params: { projectId: p.id } })} />
-        <Button style={{ flex: 1 }} tone="ghost" title={`🗣️ ${t('Grievances')} (${p.grievances_open})`} onPress={() => navigation.navigate('Home', { screen: 'Grievances', params: { projectId: p.id } })} />
+        <Button style={{ flex: 1 }} tone="saffron" title={t('Random VC')} onPress={() => navigation.navigate('Home', { screen: 'VC', params: { projectId: p.id } })} />
+        <Button style={{ flex: 1 }} tone="ghost" title={`${t('Grievances')} (${p.grievances_open})`} onPress={() => navigation.navigate('Home', { screen: 'Grievances', params: { projectId: p.id } })} />
       </View>
 
       <View style={s.card}>
@@ -72,7 +72,7 @@ export default function ProjectScreen({ route, navigation }) {
           <View key={c.id} style={[s.between, { paddingVertical: 6 }]}>
             <Text style={{ flex: 1, color: C.text }}>{c.label} <Text style={s.muted}>{c.id}</Text></Text>
             {c.online
-              ? <Button tone="ghost" title={`▶ ${t('Live')}`} onPress={() => navigation.navigate('Camera', { camera: { ...c, project_name: p.name, project_id: p.id } })} />
+              ? <Button tone="ghost" title={t('Live')} onPress={() => navigation.navigate('Camera', { camera: { ...c, project_name: p.name, project_id: p.id } })} />
               : <Pill tone="red">{t('Offline')}</Pill>}
           </View>
         ))}

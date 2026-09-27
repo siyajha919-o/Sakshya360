@@ -52,7 +52,7 @@ export default function AssignScreen() {
         {isOfficial && (
           <View style={[s.row, { marginTop: 10 }]}>
             <TextInput style={[s.input, { width: 60 }]} keyboardType="number-pad" value={count} onChangeText={setCount} />
-            <Button style={{ flex: 1 }} tone="saffron" title={`🎲 ${t('Generate now')}`} onPress={generate} busy={busy} />
+            <Button style={{ flex: 1 }} tone="saffron" title={t('Generate now')} onPress={generate} busy={busy} />
           </View>
         )}
       </View>

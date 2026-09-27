@@ -35,8 +35,11 @@ services:
       - "9997:9997"        # control API (camera health)
     environment:
       MTX_WEBRTCADDITIONALHOSTS: 127.0.0.1,${HOST_LAN_IP:-127.0.0.1}
+      TZ: IST-5:30            # camera clock overlay in Indian Standard Time
     volumes:
       - ./mediamtx.yml:/mediamtx.yml:ro
+      - ./camera-sim.sh:/camera-sim.sh:ro
+      - ./clips:/clips:ro     # demo footage (download-clips.sh)
       - ./outages:/outages:ro
 
   # ---- Application services: `docker compose --profile app up -d --build` (see README "Deployment").
