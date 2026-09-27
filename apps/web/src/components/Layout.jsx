@@ -3,13 +3,13 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { closeSocket, getSession, getSocket, scopeLabel, setSession } from '../api';
 
 const NAV = [
-  ['/', '📊', 'Live dashboard'],
-  ['/cctv', '📹', 'CCTV surveillance'],
-  ['/vc', '📞', 'Random VC'],
-  ['/assignments', '🎲', 'Inspection assignment'],
-  ['/reports', '📋', 'Inspection reports'],
-  ['/grievances', '🗣️', 'Beneficiary grievances'],
-  ['/analytics', '🧠', 'AI analytics & audit'],
+  ['/', 'Live dashboard'],
+  ['/cctv', 'CCTV surveillance'],
+  ['/vc', 'Random VC'],
+  ['/assignments', 'Inspection assignment'],
+  ['/reports', 'Inspection reports'],
+  ['/grievances', 'Beneficiary grievances'],
+  ['/analytics', 'AI analytics & audit'],
 ];
 
 export default function Layout() {
@@ -37,8 +37,8 @@ export default function Layout() {
     <div className="shell">
       <aside className="side">
         <div className="brand"><img src="/favicon.svg" alt="" /><div><b>Sakshya360</b><small>DoSJE Monitoring</small></div></div>
-        {NAV.map(([to, icon, label]) => (
-          <NavLink key={to} to={to} end={to === '/'}><span>{icon}</span>{label}</NavLink>
+        {NAV.map(([to, label]) => (
+          <NavLink key={to} to={to} end={to === '/'}>{label}</NavLink>
         ))}
         <div className="who">
           <div><b>{user.name}</b></div>
